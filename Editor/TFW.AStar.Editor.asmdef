@@ -1,0 +1,16 @@
+{
+    "name": "TFW.AStar.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:22222dffe759d8a4fa6eed1625da3177"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
