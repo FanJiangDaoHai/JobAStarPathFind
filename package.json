@@ -1,6 +1,6 @@
 {
   "name": "com.tfw.pathfinding",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "TFW Jobs AStar Pathfinding",
   "description": "A multi-threaded pathfinding tool",
   "unity": "2019.1",
@@ -13,7 +13,7 @@
   ],
   "author": {
     "name": "Tap4Fun",
-    "url": "https://github.com/FanJiangDaoHai/com.tfw.pathfinding"
+    "url": "https://github.com/FanJiangDaoHai/com.tfw.pathfinding.git"
   },
   "maintainers": [
     {
@@ -25,6 +25,13 @@
     {
       "name": "zhangli",
       "email": "zhangli@nibirutech.com"
+    }
+  ],
+  "samples": [
+    {
+      "displayName": "AStar Sample",
+      "description": "Contains sample for all features of the package",
+      "path": "Samples~/TestPathFind"
     }
   ]
 }
