@@ -174,7 +174,6 @@ namespace TFW.AStar
         private bool CheckPointAround(NativeHashMap<int, Point> changeMap, NativeHashSet<int> pointAround, int index,
             int offset, int realJobIndex)
         {
-            if (pointAround.Count < 0) return true;
             var point = GetPoint(changeMap, index);
             for (int i = point.X; i < point.X + CustomDats[realJobIndex].Sensitivity; i++)
             {

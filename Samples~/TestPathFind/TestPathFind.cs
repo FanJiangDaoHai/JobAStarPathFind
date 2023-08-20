@@ -6,6 +6,7 @@
 // 除非适用法律要求或书面同意，否则保密信息按照使用许可证要求使用，不附带任何明示或暗示的保证或条件。
 // 有关管理权限的特定语言，请参阅许可证副本。
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -42,7 +43,7 @@ namespace TFW.AStar
             AStarMgr.Instance.AddMap(200003, MapData, transform);
             for (int i = 0; i < ActorCount; i++)
             {
-                var offset = Vector3.zero; //new Vector3(Random.Range(-24, 24), 0, Random.Range(-24, 24));
+                var offset = new Vector3(Random.Range(-24, 24), 0, Random.Range(-24, 24));
                 var newActor = GameObject.Instantiate(Actor, SpawnerPos.position + offset, Quaternion.identity);
                 switch (TestType)
                 {
@@ -131,10 +132,16 @@ namespace TFW.AStar
             GUILayout.Label("Click To Move");
         }
 
+        private void OnDestroy()
+        {
+            //AStarMgr.Instance.DeInit();
+        }
+
         private List<AStarAgent> m_Agents = new List<AStarAgent>();
         private List<NavMeshAgent> m_NavMeshAgents = new List<NavMeshAgent>();
         private List<Transform> m_Actors = new List<Transform>();
     }
+    
 
     [System.Serializable]
     public enum TestType

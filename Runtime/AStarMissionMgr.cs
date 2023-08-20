@@ -6,6 +6,7 @@
 // 除非适用法律要求或书面同意，否则保密信息按照使用许可证要求使用，不附带任何明示或暗示的保证或条件。
 // 有关管理权限的特定语言，请参阅许可证副本。
 
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Jobs;
@@ -63,19 +64,20 @@ namespace TFW.AStar
                         break;
                     }
                 }
-                
+
+                var time = System.DateTime.Now;
                 if (m_CurDealCount > 0)
                 {
                     int loopTimes = m_CurDealCount / IterationsPerJob;
                     int remainder = m_CurDealCount % IterationsPerJob;
                     loopTimes = remainder > 0 ? loopTimes + 1 : loopTimes;
-
+                    
                     NativeArray<JobHandle> handles = new NativeArray<JobHandle>(loopTimes, Allocator.TempJob,
                         NativeArrayOptions.UninitializedMemory);
-
-
+                    
+                    
                     int numberOfScheduledPaths = 0;
-
+                    
                     for (int i = 0; i < loopTimes; ++i)
                     {
                         int iterations = (i < loopTimes - 1 || remainder == 0) ? IterationsPerJob : remainder;
@@ -101,9 +103,10 @@ namespace TFW.AStar
                             numberOfScheduledPaths %= ScheduleAfterNumOfPaths;
                         }
                     }
-
+                    
                     var deps = JobHandle.CombineDependencies(handles);
                     deps.Complete();
+                    handles.Dispose();
 
 
                     // 一次性处理会产生更多临时分配的内存，一旦零时分配内存不足会造成性能变差
@@ -127,6 +130,8 @@ namespace TFW.AStar
                     // handle.Complete();
                     m_CurDealCount = 0;
                     m_PointAround.Clear();
+
+                    //Debug.Log($"time : {(System.DateTime.Now - time).TotalMilliseconds} ms");
                 }
 
                 if (m_NeedCompleteMission.Count > 0)
@@ -166,6 +171,15 @@ namespace TFW.AStar
 
                 m_AreaMissionDict[area].Enqueue(mission);
             }
+        }
+
+        private void OnDestroy()
+        {
+            m_PointAround.Dispose();
+            m_Dats.Dispose();
+            m_Result.Dispose();
+            m_Dir.Dispose();
+            AStarMgr.Instance.DeInit();
         }
 
         const int ScheduleAfterNumOfPaths = 256;

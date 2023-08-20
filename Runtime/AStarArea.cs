@@ -242,6 +242,7 @@ namespace TFW.AStar
 
         public void SetPoint(int index, bool isWall, AStarAgent agent = null)
         {
+            if (!m_AreaPointData.IsCreated) return;
             if (index >= m_AreaPointData.Length)
             {
                 Debug.LogError($"{index} 长度超出地图{m_AreaId}长度 {m_AreaPointData.Length}");
