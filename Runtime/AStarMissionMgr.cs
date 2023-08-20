@@ -20,9 +20,28 @@ namespace TFW.AStar
 
         //正常情况下并发寻路此时不会有那么高1000个物体在地图中随机移动每帧请求次数顶天10多个，当然不包括一起寻路的情况
         //当然这不代表场景中只能有64个Agent，后面排队的任务会在下一帧处理。
-        [UnityEngine.Tooltip("一次多线程最大处理任务数量")] public int MaxDealMissionCount = 64;
-        [UnityEngine.Tooltip("一次A*最大搜索次数")] public int MaxSearchCount = 1000;
-        [UnityEngine.Tooltip("bach处理任务数量")] public int InnerLoopBatchCount = 1;
+        public int MaxDealMissionCount { get; } = 1000;
+        public int OneTimeDealMissionCount { get; private set; } = 64;
+        public int MaxSearchCount { get; private set; } = 1000;
+
+        /// <summary>
+        /// 设置任务每帧最大批处理数
+        /// </summary>
+        /// <param name="count"></param>
+        public void SetOneTimeDealMissionCount(int count)
+        {
+            if (count <= 0) return;
+            OneTimeDealMissionCount = Math.Min(count, 1000);
+        }
+
+        /// <summary>
+        /// 设置每次寻路最大搜索次数
+        /// </summary>
+        /// <param name="count"></param>
+        public void SetMaxSearchCount(int count)
+        {
+            MaxSearchCount = count;
+        }
 
 
         private void Awake()
@@ -59,7 +78,7 @@ namespace TFW.AStar
                     m_Dats[m_CurDealCount] = mission.CustomData;
                     m_NeedCompleteMission.Add(mission);
                     ++m_CurDealCount;
-                    if (m_CurDealCount >= MaxDealMissionCount)
+                    if (m_CurDealCount >= OneTimeDealMissionCount)
                     {
                         break;
                     }
@@ -71,13 +90,13 @@ namespace TFW.AStar
                     int loopTimes = m_CurDealCount / IterationsPerJob;
                     int remainder = m_CurDealCount % IterationsPerJob;
                     loopTimes = remainder > 0 ? loopTimes + 1 : loopTimes;
-                    
+
                     NativeArray<JobHandle> handles = new NativeArray<JobHandle>(loopTimes, Allocator.TempJob,
                         NativeArrayOptions.UninitializedMemory);
-                    
-                    
+
+
                     int numberOfScheduledPaths = 0;
-                    
+
                     for (int i = 0; i < loopTimes; ++i)
                     {
                         int iterations = (i < loopTimes - 1 || remainder == 0) ? IterationsPerJob : remainder;
@@ -103,7 +122,7 @@ namespace TFW.AStar
                             numberOfScheduledPaths %= ScheduleAfterNumOfPaths;
                         }
                     }
-                    
+
                     var deps = JobHandle.CombineDependencies(handles);
                     deps.Complete();
                     handles.Dispose();

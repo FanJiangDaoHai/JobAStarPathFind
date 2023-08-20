@@ -41,6 +41,7 @@ namespace TFW.AStar
         {
             AStarMgr.Instance.Init();
             AStarMgr.Instance.AddMap(200003, MapData, transform);
+            AStarMissionMgr.Instance.SetOneTimeDealMissionCount(ActorCount);
             for (int i = 0; i < ActorCount; i++)
             {
                 var offset = new Vector3(Random.Range(-24, 24), 0, Random.Range(-24, 24));
@@ -77,19 +78,20 @@ namespace TFW.AStar
                 var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out var hit))
                 {
+                    var dir = new Vector3(hit.point.x, 0, hit.point.z);
                     switch (TestType)
                     {
                         case TestType.AStar:
                             foreach (var aStarAgent in m_Agents)
                             {
-                                aStarAgent.SetDestination(hit.point);
+                                aStarAgent.SetDestination(dir);
                             }
 
                             break;
                         case TestType.NavMesh:
                             foreach (var navMeshAgent in m_NavMeshAgents)
                             {
-                                navMeshAgent.SetDestination(Vector3.zero);
+                                navMeshAgent.SetDestination(dir);
                             }
 
                             break;
@@ -131,11 +133,7 @@ namespace TFW.AStar
         {
             GUILayout.Label("Click To Move");
         }
-
-        private void OnDestroy()
-        {
-            //AStarMgr.Instance.DeInit();
-        }
+        
 
         private List<AStarAgent> m_Agents = new List<AStarAgent>();
         private List<NavMeshAgent> m_NavMeshAgents = new List<NavMeshAgent>();
