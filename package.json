@@ -11,22 +11,6 @@
     "AStar",
     "Jobs"
   ],
-  "author": {
-    "name": "Tap4Fun",
-    "url": "https://github.com/FanJiangDaoHai/com.tfw.pathfinding.git"
-  },
-  "maintainers": [
-    {
-      "name": "zhangli",
-      "email": "zhangli@nibirutech.com"
-    }
-  ],
-  "contributors": [
-    {
-      "name": "zhangli",
-      "email": "zhangli@nibirutech.com"
-    }
-  ],
   "samples": [
     {
       "displayName": "AStar Sample",
