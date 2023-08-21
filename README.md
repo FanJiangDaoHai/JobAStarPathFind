@@ -57,8 +57,8 @@ IsCityEditor：主要用于运行时找到的标记的可编辑区域，比如X2
 测试样例  
 ![img_1.png](Runtime/Img/img_6.png)  
 结果  
-![img_2.png](Runtime/Img/img_7.png)
-同样配置使用常规A* 代码改成的多线程寻路，不考虑GC的情况下500次的平均耗时是30.3ms,对比有1/3的提升  
+![img_2.png](Runtime/Img/img_7.png)  
+同样配置使用常规AStar代码改成的多线程寻路，不考虑GC的情况下500次的平均耗时是30.3ms,对比有1/3的提升  
 
 
 
